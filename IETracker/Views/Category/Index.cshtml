@@ -1,0 +1,74 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+@Html.ActionLink("Create", "Save", null, new { @class = "btn btn-primary" })
+
+<br />
+<br />
+
+<table id="category" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+
+            <th>
+                Delete
+            </th>
+
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+@section scripts{
+
+    <script>
+
+        $(document).ready(function () {
+
+            var dataTable = $("#category").DataTable({
+                ajax: {
+                    url: "/api/category",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "name",
+                        render: function (data, tpye, category) {
+                            return "<a href='/Category/Save/" + category.id + "' >" + category.name + " </a > ";
+                        }
+                    },
+                    {
+                        data: "id",
+                        render: function (data, type, category) {
+                            return "<button class='btn-link js-delete' data-category-id=" + data + "> Delete </button>"
+                        }
+                    }
+                ]
+            });
+
+            $("#category").on("click", "js-delete", function () {
+                var button = $(this);
+                bootbox.confirm("Are you sure to delete this record ?", function (success) {
+                    if (success) {
+                        $.ajax({
+                            url: "/api/category/" button.attr
+                        })
+                    }
+                });
+
+
+            });
+
+
+        });
+
+    </script>
+
+}

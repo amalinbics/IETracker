@@ -1,0 +1,92 @@
+﻿
+@{
+    ViewBag.Title = "Category";
+}
+
+<h2>Category</h2>
+<hr />
+
+<form id="category">
+    <div class="form-group">
+        <label>Name</label>
+        <input id="name" name="name" type="text" value="" class="form-control" required />
+    </div>
+    <button class="btn btn-primary">Submit</button>
+
+</form>
+
+@section scripts{
+
+    @Scripts.Render("~/bundles/jqueryval");
+
+
+
+    <script>
+        $(document).ready(function () {
+
+
+            var id = @ViewBag.id;
+           
+            if (id != 0) {              
+                //$.ajax('/api/category/' + id, function (data) {
+                //    console.log(data.id);
+                //});
+
+                $.ajax({
+                    url: '/api/category/' + id,
+                    method: 'get',
+                    success: function (result) {
+                        $("#name").val(result.name);
+                    }
+                })
+            }
+
+            var validator = $("#category").validate({
+                submitHandler: function () {
+                    var vm = {};
+                    vm.id = id;
+                    vm.name = $("#name").val();
+
+                    if (id == 0) {
+                        $.ajax({
+                            url: '/api/category/',
+                            method: 'post',
+                            data: vm
+                        }).done(function () {
+                            toastr.success("Saved Successfully");
+                        }).fail(function () {
+                            toastr.fail("Sorry something went wrong.!");
+                        })
+
+                    }
+                    else {
+                        $.ajax({
+                            url: '/api/category/' + id,
+                            method: 'put',
+                            data: vm
+                        }).done(function () {
+                            toastr.success("Saved Successfully");
+                        }).fail(function () {
+                            toastr.fail("Sorry something went wrong.!");
+                        })
+                    }
+                    
+                    return false;
+                }
+            });
+        });
+
+    </script>
+
+}
+
+
+
+
+
+
+
+
+
+
+
