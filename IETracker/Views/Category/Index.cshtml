@@ -53,12 +53,16 @@
                 ]
             });
 
-            $("#category").on("click", "js-delete", function () {
+            $("#category").on("click", ".js-delete", function () {
                 var button = $(this);
                 bootbox.confirm("Are you sure to delete this record ?", function (success) {
                     if (success) {
                         $.ajax({
-                            url: "/api/category/" button.attr
+                            url: "/api/category/" + button.attr("data-category-id"),
+                            method: "delete",
+                            success: function () {
+                                dataTable.row(button.parents("tr")).remove().draw();
+                            }
                         })
                     }
                 });
