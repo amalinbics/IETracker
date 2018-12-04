@@ -15,7 +15,8 @@ namespace IETracker
                         "~/Scripts/toastr.js",
                         "~/Scripts/DataTables/jquery.dataTables.js",
                         "~/Scripts/DataTables/dataTables.bootstrap.js",
-                         "~/Scripts/bootbox.js"
+                        "~/Scripts/bootbox.js",
+                        "~/Scripts/typeahead.bundle.js"
                        ));
 
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
@@ -32,11 +33,12 @@ namespace IETracker
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js"));
 
-            bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
-                      "~/Content/site.css",
+            bundles.Add(new StyleBundle("~/Content/css").Include(                                     
                       "~/Content/toastr.css",
-                      "~/Content/DataTabels/dataTables.bootstrap.css"));
+                      "~/Content/DataTabels/dataTables.bootstrap.css",
+                      "~/Content/typeahead.css",
+                      "~/Content/bootstrap.css",
+                      "~/Content/site.css"));
         }
     }
 }

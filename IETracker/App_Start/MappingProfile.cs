@@ -16,6 +16,10 @@ namespace IETracker.App_Start
             {
                 cfg.CreateMap<Category, CategoryDto>();
                 cfg.CreateMap<CategoryDto, Category>();
+                cfg.CreateMap<Transaction, TransactionDto>();
+                cfg.CreateMap<TransactionDto, Transaction>();
+                cfg.CreateMap<TransactionType, TransactionTypeDto>();
+                cfg.CreateMap<TransactionTypeDto, TransactionType>();
             });
 
         }

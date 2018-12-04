@@ -54,6 +54,8 @@
                             data: vm
                         }).done(function () {
                             toastr.success("Saved Successfully");
+                            $("#name").val("");
+                            $("#category").resetForm();
                         }).fail(function () {
                             toastr.fail("Sorry something went wrong.!");
                         })

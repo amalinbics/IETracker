@@ -18,8 +18,15 @@ namespace IETracker.Controllers.api
             _context = new ApplicationDbContext();
         }
 
-        public IHttpActionResult Get()
+        public IHttpActionResult Get(string query = null)
         {
+            if (query != null)
+            {
+                return Ok(_context.Categories
+                    .Where(c => c.Name.Contains(query))
+                    .ToList()
+                    .Select(Mapper.Map<Category, CategoryDto>));
+            }                
             return Ok(_context.Categories.ToList().Select(Mapper.Map<Category, CategoryDto>));
         }
 

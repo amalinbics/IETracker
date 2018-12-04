@@ -11,6 +11,7 @@ namespace IETracker.Models
     {
 
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }
 
         public ApplicationDbContext()
             : base("IETracker", throwIfV1Schema: false)

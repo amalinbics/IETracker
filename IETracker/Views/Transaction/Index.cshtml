@@ -1,0 +1,98 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Transaction</h2>
+
+<hr />
+
+<a class="btn btn-primary" href="Transaction/Add/">Create</a>
+<br />
+<br />
+
+<table id="Transaction" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Description</th>
+            <th>Date</th>
+            <th>Amount</th>
+            <th>Category</th>
+            <th>Type</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+
+@section Scripts{
+
+    <script>
+
+        $(document).ready(function () {
+
+            var transaction = $("#Transaction").DataTable({
+                ajax: {
+                    url: "/api/transaction/",
+                    method: "get",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "description",
+                        render: function (data, type, transaction) {
+                            return "<a href='/Transaction/Add/" + transaction.id + "'>" + transaction.description + "</a>"
+                        }
+                    },
+                    {
+                        data: "transactionDate"
+                    },
+                    {
+                        data: "amount",
+                    },
+                    {
+                        data: "category.name"
+                    },
+                    {
+                        data: "transactionType.type"
+                    },
+                    {
+                        data: "id",
+                        render: function (data) {
+                            return "<a  class='js-delete'  data-transaction-id=" + data + "> Delete </a>";
+                        }
+                    }
+                ]
+            })
+
+            $("#Transaction").on("click", ".js-delete", function () {
+                var button = $(this);
+                bootbox.confirm("Are you sure to delete ?", function (success) {
+                    if (success) {
+                        $.ajax({
+                            url: "/api/transaction/" + button.attr("data-transaction-id"),
+                            method: "delete"
+                        }).done(function () {
+                            transaction.row(button.parents("tr")).remove().draw();
+                            toastr.success("Deleted Successfully");
+                        }).fail(function () {
+                            toastr.fail("something went wrong");
+                        })
+                        console.log(button.attr("data-transaction-id"));
+                    }
+                });
+
+            })
+
+
+
+        });
+
+
+
+    </script>
+
+}
+
+

@@ -4,15 +4,15 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace IETracker.Models
+namespace IETracker.DTO
 {
-    public class Transaction
+    public class TransactionDto
     {
         public int Id { get; set; }
 
         [StringLength(100)]
         [Required]
-        public string Description  { get; set; }
+        public string Description { get; set; }
 
         [Required]
         public DateTime TransactionDate { get; set; }
@@ -23,12 +23,11 @@ namespace IETracker.Models
         [Required]
         public int CategoryId { get; set; }
 
-        public Category Category { get; set; }
+        public CategoryDto Category { get; set; }
 
         [Required]
         public byte TransactionTypeId { get; set; }
 
-        public TransactionType TransactionType { get; set; }
-
+        public TransactionTypeDto TransactionType { get; set; }
     }
 }

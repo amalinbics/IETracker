@@ -214,10 +214,14 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\api\CategoryController.cs" />
+    <Compile Include="Controllers\api\TransactionController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\TransactionController.cs" />
     <Compile Include="DTO\CategoryDto.cs" />
+    <Compile Include="DTO\TransactionDto.cs" />
+    <Compile Include="DTO\TransactionTypeDto.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -233,6 +237,14 @@
     <Compile Include="Migrations\201811080738210_AddingCategoryModel.Designer.cs">
       <DependentUpon>201811080738210_AddingCategoryModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201811190939308_AddTransaction.cs" />
+    <Compile Include="Migrations\201811190939308_AddTransaction.Designer.cs">
+      <DependentUpon>201811190939308_AddTransaction.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811190942470_SeedTransactionType.cs" />
+    <Compile Include="Migrations\201811190942470_SeedTransactionType.Designer.cs">
+      <DependentUpon>201811190942470_SeedTransactionType.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -240,6 +252,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Transaction.cs" />
+    <Compile Include="Models\TransactionType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -407,10 +420,13 @@
     <Content Include="Content\DataTables\swf\flashExport.swf" />
     <Content Include="Content\toastr.css" />
     <Content Include="Content\toastr.min.css" />
+    <Content Include="Content\typeahead.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Scripts\bloodhound.js" />
+    <Content Include="Scripts\bloodhound.min.js" />
     <Content Include="Scripts\bootbox.js" />
     <Content Include="Scripts\bootbox.min.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -512,6 +528,10 @@
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\toastr.js" />
     <Content Include="Scripts\toastr.min.js" />
+    <Content Include="Scripts\typeahead.bundle.js" />
+    <Content Include="Scripts\typeahead.bundle.min.js" />
+    <Content Include="Scripts\typeahead.jquery.js" />
+    <Content Include="Scripts\typeahead.jquery.min.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -548,6 +568,9 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Category\CategoryForm.cshtml" />
     <Content Include="Views\Category\Index.cshtml" />
+    <Content Include="Views\Shared\_Navigation.cshtml" />
+    <Content Include="Views\Transaction\Index.cshtml" />
+    <Content Include="Views\Transaction\frmTransaction.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -574,6 +597,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201811080738210_AddingCategoryModel.resx">
       <DependentUpon>201811080738210_AddingCategoryModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811190939308_AddTransaction.resx">
+      <DependentUpon>201811190939308_AddTransaction.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811190942470_SeedTransactionType.resx">
+      <DependentUpon>201811190942470_SeedTransactionType.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
