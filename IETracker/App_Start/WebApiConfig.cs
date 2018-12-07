@@ -17,13 +17,21 @@ namespace IETracker
             settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             settings.Formatting = Formatting.Indented;
 
-
+            config.Routes.MapHttpRoute(
+             name: "ApiWithAction",
+             routeTemplate: "api/Home/{action}/{id}",
+             defaults: new { Controller = "Home", id = RouteParameter.Optional }
+           );
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+           
+
+
         }
     }
 }

@@ -46,7 +46,10 @@
                         }
                     },
                     {
-                        data: "transactionDate"
+                        data: "transactionDate",
+                        render: function (data) {
+                            return moment(data).format('DD/MM/YYYY');
+                        }
                     },
                     {
                         data: "amount",
@@ -60,7 +63,7 @@
                     {
                         data: "id",
                         render: function (data) {
-                            return "<a  class='js-delete'  data-transaction-id=" + data + "> Delete </a>";
+                            return "<a href='#'  class='js-delete'  data-transaction-id=" + data + "> Delete </a>";
                         }
                     }
                 ]

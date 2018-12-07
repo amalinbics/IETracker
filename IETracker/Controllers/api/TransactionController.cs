@@ -29,6 +29,7 @@ namespace IETracker.Controllers.api
 
         }
 
+                  
         public IHttpActionResult Get(int id)
         {
             var transaction = _context.Transactions.
@@ -56,7 +57,7 @@ namespace IETracker.Controllers.api
 
         [HttpPut]
         public IHttpActionResult Update(int id, TransactionDto transactionDto)
-        {
+        {            
             if (!ModelState.IsValid)
             {
                 return BadRequest();
