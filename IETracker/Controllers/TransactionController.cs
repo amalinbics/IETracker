@@ -15,7 +15,7 @@ namespace IETracker.Controllers
 
         }
 
-        public ActionResult Add(int? id = 0)
+        public ActionResult Add(int id =0 )
         {
             ViewBag.Id = id;
             return View("frmTransaction");

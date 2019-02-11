@@ -13,5 +13,9 @@ namespace IETracker.Models
         [StringLength(50)]
         [Required]
         public string Type { get; set; }
+
+
+        public const int Income = 1;
+        public const int Expense = 2;
     }
 }

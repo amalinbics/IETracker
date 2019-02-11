@@ -17,19 +17,29 @@ namespace IETracker
             settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             settings.Formatting = Formatting.Indented;
 
+            config.MapHttpAttributeRoutes();
+
             config.Routes.MapHttpRoute(
              name: "ApiWithAction",
-             routeTemplate: "api/Home/{action}/{id}",
-             defaults: new { Controller = "Home", id = RouteParameter.Optional }
+             routeTemplate: "api/Home/Get/",
+             defaults: new { Controller = "Home", Action = "Get" }
+           );
+
+            config.Routes.MapHttpRoute(
+             name: "CategoryWiseInocmeExpense",
+             routeTemplate: "api/Home/GetCategoryWiseInocmeExpense/",
+             defaults: new { Controller = "Home", Action = "GetCategoryWiseInocmeExpense" }
            );
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
+                routeTemplate: "api/{controller}/{action}/{id}",
+                defaults: new { id = RouteParameter.Optional } 
+
+
             );
 
-           
+
 
 
         }

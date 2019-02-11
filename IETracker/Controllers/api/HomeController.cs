@@ -29,8 +29,18 @@ namespace IETracker.Controllers.api
                 .Select(lg => new { Type = lg.Key, Total = lg.Sum(l => l.Amount) });
 
 
-            var finalResult = result.Select(r => r.Total).ToArray();
-            return Ok(finalResult);
+            decimal[] transactionSum = { 0, 0 };
+              
+
+            foreach (var item in result)
+            {
+                if (item.Type == TransactionType.Income)
+                    transactionSum[0] = item.Total;
+                else if (item.Type == TransactionType.Expense)
+                    transactionSum[1] = item.Total;                      
+            }
+
+            return Ok(transactionSum);
 
 
         }

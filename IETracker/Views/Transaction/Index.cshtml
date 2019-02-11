@@ -6,10 +6,37 @@
 <h2>Transaction</h2>
 
 <hr />
+<div class="toolbar">
+    <div class="row ">
+        <div class="col-md-5">
+            <a class="btn btn-primary" href="Add/">Create</a>
+        </div>
+        <div class="col-md-7">
 
-<a class="btn btn-primary" href="Transaction/Add/">Create</a>
-<br />
-<br />
+            <form id="frm-search">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <input id="fromdate" name="date" type="text" class="form-control" required autocomplete="off" placeholder="FromDate" />
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <input id="todate" name="date" type="text" class="form-control" required autocomplete="off" placeholder="ToDate" />
+                        </div>
+                    </div>
+                    <div class="col-md-4 float-right">
+                        <button class="btn btn-primary">Get</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+
+
+    </div>
+
+</div>
 
 <table id="Transaction" class="table table-bordered table-hover">
     <thead>
@@ -32,10 +59,30 @@
 
         $(document).ready(function () {
 
+
+            var currentDate = new Date();
+            @*var fromdate = moment().format(new Date(@DateTime.Now.Year,@DateTime.Now.Month, 1), "DD/MM/YYYY");
+            var todate = moment().format(new Date(@DateTime.Now.Year,@DateTime.Now.Month, @DateTime.Now.Day),"DD/MM/YYYY");*@
+
+            console.log(currentDate.getFullYear());
+            console.log(currentDate.getMonth()+1);
+            console.log(currentDate.getDate());
+
+
+            var fromdate = moment(new Date(currentDate.getFullYear(), currentDate.getMonth(),"1")).format("DD/MM/YYYY");
+            var todate = moment(currentDate).format("DD/MM/YYYY");
+
+
+
+            $("#fromdate").datepicker({ dateFormat: 'dd/mm/yy' }).val(fromdate);
+            $("#todate").datepicker({ dateFormat: 'dd/mm/yy' }).val(todate);
+
+           
+
             var transaction = $("#Transaction").DataTable({
                 ajax: {
-                    url: "/api/transaction/",
-                    method: "get",
+                    url: "/api/transaction/GetTransactionDateRangeWise/" + fromdate + "/" + todate ,
+                    method: "get",                    
                     dataSrc: ""
                 },
                 columns: [

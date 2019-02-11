@@ -29,7 +29,7 @@ namespace IETracker.Controllers.api
 
         }
 
-                  
+
         public IHttpActionResult Get(int id)
         {
             var transaction = _context.Transactions.
@@ -39,6 +39,17 @@ namespace IETracker.Controllers.api
 
             var transactionDto = Mapper.Map<Transaction, TransactionDto>(transaction);
             return Ok(transactionDto);
+        }
+        
+        [HttpPost]
+        [Route("api/transaction/GetTransactionDateRangeWise")]
+        public IHttpActionResult GetTransactionDateRangeWise(DateTime fromDate, DateTime toDate)
+        {
+            var transactions = _context.Transactions
+                .Where(t => t.TransactionDate <= fromDate && t.TransactionDate >= toDate)
+                .ToList()
+                .Select(Mapper.Map<Transaction, TransactionDto>);
+            return Ok(transactions);
         }
 
         [HttpPost]
@@ -57,7 +68,7 @@ namespace IETracker.Controllers.api
 
         [HttpPut]
         public IHttpActionResult Update(int id, TransactionDto transactionDto)
-        {            
+        {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
