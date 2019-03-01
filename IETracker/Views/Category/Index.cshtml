@@ -6,9 +6,7 @@
 <h2>Category</h2>
 <hr />
 
-@Html.ActionLink("Create", "Save", null, new { @class = "btn btn-primary float-right create-btn" })
-
-
+@Html.ActionLink("Create", "Save", null, new { @class = "btn btn-primary create-btn" })
 
 <br />
 <br />
@@ -37,7 +35,7 @@
 
             var dataTable = $("#category").DataTable({
                 ajax: {
-                    url: "/api/category",
+                    url: "/api/category/Get",
                     dataSrc: ""
                 },
                 columns: [
@@ -61,7 +59,7 @@
                 bootbox.confirm("Are you sure to delete this record ?", function (success) {
                     if (success) {
                         $.ajax({
-                            url: "/api/category/" + button.attr("data-category-id"),
+                            url: "/api/category/Delete/" + button.attr("data-category-id"),
                             method: "delete",
                             success: function () {
                                 dataTable.row(button.parents("tr")).remove().draw();

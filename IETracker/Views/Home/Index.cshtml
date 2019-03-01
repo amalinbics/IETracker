@@ -9,6 +9,12 @@
         </div>
     </div>
     <div class="row">
+       <div class="col-12">
+           <h2 id="lblBalance" class="text-primary balance"></h2>
+       </div>
+
+    </div>
+    <div class="row">
         <div class="col-md-6">
             <div class="card">
                 <div class="card-body">
@@ -33,7 +39,7 @@
 
         $(document).ready(function () {
             var colors = ['#007bff', '#EC1E27'];
-
+            var balance;
             $.ajax({
                 url: "/api/home/Get",
                 type: "get",
@@ -41,7 +47,9 @@
                     chartData = result;
                     console.log(chartData[0]);
                     console.log(chartData[1]);
-
+                    balance = chartData[0] - chartData[1];
+                    $('#lblBalance').html("Balance - " + balance);
+                    console.log(balance);
                     var chBar = document.getElementById("chtIncomeExpense");
                     var chartData = {
                         labels: ["Income", "Expense"],
@@ -136,7 +144,7 @@
 
             });
 
-
+           
 
         });
 
@@ -148,6 +156,8 @@
             }
             return color;
         }
+
+
 
 
     </script>

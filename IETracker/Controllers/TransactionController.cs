@@ -9,6 +9,7 @@ namespace IETracker.Controllers
     public class TransactionController : Controller
     {
         // GET: Transaction
+        [Authorize]
         public ActionResult Index()
         {
             return View();

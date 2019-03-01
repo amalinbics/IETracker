@@ -248,9 +248,14 @@
     <Compile Include="Migrations\201811190942470_SeedTransactionType.Designer.cs">
       <DependentUpon>201811190942470_SeedTransactionType.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201903011521448_AddingBalanceTable.cs" />
+    <Compile Include="Migrations\201903011521448_AddingBalanceTable.Designer.cs">
+      <DependentUpon>201903011521448_AddingBalanceTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
+    <Compile Include="Models\Balance.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -640,6 +645,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201811190942470_SeedTransactionType.resx">
       <DependentUpon>201811190942470_SeedTransactionType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903011521448_AddingBalanceTable.resx">
+      <DependentUpon>201903011521448_AddingBalanceTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

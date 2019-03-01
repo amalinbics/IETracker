@@ -23,7 +23,7 @@ namespace IETracker.Controllers
         }
 
 
-        public ActionResult Save(int id)
+        public ActionResult Save(int id = 0)
         {
             ViewBag.id = id;
             return View("CategoryForm");

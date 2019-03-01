@@ -7,36 +7,52 @@
 
 <hr />
 <div class="toolbar">
-    <div class="row ">
-        <div class="col-md-5">
-            <a class="btn btn-primary" href="Add/">Create</a>
-        </div>
-        <div class="col-md-7">
+    <a class="btn btn-primary" href="Transaction/Add/">Create</a>
 
-            <form id="frm-search">
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <input id="fromdate" name="date" type="text" class="form-control" required autocomplete="off" placeholder="FromDate" />
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <input id="todate" name="date" type="text" class="form-control" required autocomplete="off" placeholder="ToDate" />
-                        </div>
-                    </div>
-                    <div class="col-md-4 float-right">
-                        <button class="btn btn-primary">Get</button>
-                    </div>
-                </div>
-            </form>
-
-        </div>
+    <button id="btnGet" class="btn btn-primary float-right">Get</button>
+    <input id="todate" name="date" type="text" class="form-control float-right" required autocomplete="off" placeholder="ToDate" />
+    <input id="fromdate" name="date" type="text" class="form-control float-right" required autocomplete="off" placeholder="FromDate" />
 
 
-    </div>
+
+
 
 </div>
+
+@*<div class="toolbar">
+        <div class="row ">
+            <div class="col-md-5">
+                <a class="btn btn-primary" href="Transaction/Add/">Create</a>
+
+
+
+            </div>
+            <div class="col-md-7">
+
+                <form id="frm-search">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <input id="fromdate" name="date" type="text" class="form-control" required autocomplete="off" placeholder="FromDate" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <input id="todate" name="date" type="text" class="form-control" required autocomplete="off" placeholder="ToDate" />
+                            </div>
+                        </div>
+                        <div class="col-md-4 float-right">
+                            <button id="btnGet" class="btn btn-primary">Get</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+
+
+        </div>
+
+    </div>*@
 
 <table id="Transaction" class="table table-bordered table-hover">
     <thead>
@@ -69,20 +85,20 @@
             console.log(currentDate.getDate());
 
 
-            var fromdate = moment(new Date(currentDate.getFullYear(), currentDate.getMonth(),"1")).format("DD/MM/YYYY");
-            var todate = moment(currentDate).format("DD/MM/YYYY");
+            var fromdate = moment(new Date(currentDate.getFullYear(), currentDate.getMonth(),"1")).format("MM-DD-YYYY");
+            var todate = moment(currentDate).format("MM-DD-YYYY");
 
 
 
-            $("#fromdate").datepicker({ dateFormat: 'dd/mm/yy' }).val(fromdate);
-            $("#todate").datepicker({ dateFormat: 'dd/mm/yy' }).val(todate);
+            $("#fromdate").datepicker({ dateFormat: 'dd-mm-yy' }).val(moment(fromdate).format("DD-MM-YYYY") );
+            $("#todate").datepicker({ dateFormat: 'dd-mm-yy' }).val(moment(todate).format("DD-MM-YYYY"));
 
-           
+
 
             var transaction = $("#Transaction").DataTable({
                 ajax: {
-                    url: "/api/transaction/GetTransactionDateRangeWise/" + fromdate + "/" + todate ,
-                    method: "get",                    
+                    url: "/api/transaction/DateRange/" + fromdate + "/" + todate ,
+                    method: "get",
                     dataSrc: ""
                 },
                 columns: [
@@ -95,7 +111,7 @@
                     {
                         data: "transactionDate",
                         render: function (data) {
-                            return moment(data).format('DD/MM/YYYY');
+                            return moment(data).format('DD-MM-YYYY');
                         }
                     },
                     {
@@ -121,7 +137,7 @@
                 bootbox.confirm("Are you sure to delete ?", function (success) {
                     if (success) {
                         $.ajax({
-                            url: "/api/transaction/" + button.attr("data-transaction-id"),
+                            url: "/api/transaction/Delete/" + button.attr("data-transaction-id"),
                             method: "delete"
                         }).done(function () {
                             transaction.row(button.parents("tr")).remove().draw();
@@ -133,7 +149,21 @@
                     }
                 });
 
-            })
+            });
+
+            $("#btnGet").click(function () {
+                var currentFromDate = $("#fromdate").val();
+                var currentToDate = $("#todate").val()
+                currentFromDate = moment(currentFromDate,"DD-MM-YYYY").format("MM-DD-YYYY");
+                currentToDate = moment(currentToDate,"DD-MM-YYYY").format("MM-DD-YYYY");
+                console.log(currentFromDate);
+                console.log(currentToDate);
+                transaction.ajax.url("/api/transaction/DateRange/" + currentFromDate + "/" + currentToDate).load();
+                return false;
+            });
+
+
+
 
 
 

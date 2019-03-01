@@ -26,7 +26,7 @@
 
     <div class="form-group">
         <label>Date</label>
-        <input id="date" name="date" type="text" class="form-control" required autocomplete="off"/>
+        <input id="date" name="date" type="text" class="form-control" required autocomplete="off" />
     </div>
 
     <div class="form-group">
@@ -36,10 +36,11 @@
 
     <div class="form-group">
         <label>Amount</label>
-        <input id="amount" name="amount" type="text" value="" class="form-control" required autocomplete="off"/>
+        <input id="amount" name="amount" type="text" value="" class="form-control" required autocomplete="off" />
     </div>
 
     <button class="btn btn-primary">Submit</button>
+   @Html.ActionLink("Back","Index",null,new { @class= "btn btn-primary" })
 
 </form>
 
@@ -51,7 +52,7 @@
         $(document).ready(
             function () {
 
-                $("#date").datepicker({ dateFormat: 'dd/mm/yy' });
+                $("#date").datepicker({ dateFormat: 'dd-mm-yy' });
 
                 var transactionId = @ViewBag.id;
 
@@ -62,7 +63,7 @@
                     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
                     queryTokenizer: Bloodhound.tokenizers.whitespace,
                     remote: {
-                        url: '/api/category?query=%QUERY',
+                        url: '/api/category/Get?query=%QUERY',
                         wildcard: '%QUERY'
                     }
                 });
@@ -83,7 +84,7 @@
 
                 if (transactionId != 0) {
                     $.ajax({
-                        url: "/api/transaction/" + transactionId,
+                        url: "/api/transaction/Get/" + transactionId,
                         method: "get",
                         success: function (result) {
                             console.log(result.transactionDate);                            
@@ -116,7 +117,7 @@
 
 
                                 $.ajax({
-                                    url: "/api/transaction/",
+                                    url: "/api/transaction/Add/",
                                     method: "post",
                                     data: vm
                                 }).done(function () {
@@ -137,7 +138,7 @@
                                     console.log(vm);
 
                                     $.ajax({
-                                        url: "/api/transaction/" + transactionId,
+                                        url: "/api/transaction/Update/" + transactionId,
                                         method: "put",
                                         data: vm
                                     }).done(function () {

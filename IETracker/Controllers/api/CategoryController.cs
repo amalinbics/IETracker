@@ -10,6 +10,7 @@ using System.Web.Http;
 
 namespace IETracker.Controllers.api
 {
+    [Authorize]
     public class CategoryController : ApiController
     {
         private readonly ApplicationDbContext _context;

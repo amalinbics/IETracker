@@ -12,6 +12,7 @@
         <input id="name" name="name" type="text" value="" class="form-control" required />
     </div>
     <button class="btn btn-primary">Submit</button>
+    @Html.ActionLink("Back", "Index", null, new { @class = "btn btn-primary" })
 
 </form>
 
@@ -33,7 +34,7 @@
                 //});
 
                 $.ajax({
-                    url: '/api/category/' + id,
+                    url: '/api/category/Get/' + id,
                     method: 'get',
                     success: function (result) {
                         $("#name").val(result.name);
@@ -49,7 +50,7 @@
 
                     if (id == 0) {
                         $.ajax({
-                            url: '/api/category/',
+                            url: '/api/category/Save/',
                             method: 'post',
                             data: vm
                         }).done(function () {
@@ -63,7 +64,7 @@
                     }
                     else {
                         $.ajax({
-                            url: '/api/category/' + id,
+                            url: '/api/category/update/' + id,
                             method: 'put',
                             data: vm
                         }).done(function () {

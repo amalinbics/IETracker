@@ -9,6 +9,7 @@ using System.Web.Http;
 
 namespace IETracker.Controllers.api
 {
+    [Authorize]
     public class HomeController : ApiController
     {
         private ApplicationDbContext _context;

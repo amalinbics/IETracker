@@ -28,14 +28,23 @@ textarea {
 }
 
 .create-btn{
-    margin-right:25px;
+    margin-left:20px;
 }
 
 
-.toolbar {
-    background-color: #e9ecef;
+.toolbar {    
     margin-bottom: 30px;
     box-sizing: border-box;
-    padding-top: 20px;
-    padding-left: 10px;
+    /*padding: 10px;*/
+    
 }
+
+    .toolbar input, button {
+        margin: 5px;
+    }
+
+.balance{
+    margin-bottom:30px;
+    text-align:center;
+}
+

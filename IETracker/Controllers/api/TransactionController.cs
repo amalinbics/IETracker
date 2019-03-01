@@ -11,6 +11,7 @@ using System.Data.Entity;
 
 namespace IETracker.Controllers.api
 {
+    [Authorize]
     public class TransactionController : ApiController
     {
         private ApplicationDbContext _context;
@@ -40,16 +41,21 @@ namespace IETracker.Controllers.api
             var transactionDto = Mapper.Map<Transaction, TransactionDto>(transaction);
             return Ok(transactionDto);
         }
-        
-        [HttpPost]
-        [Route("api/transaction/GetTransactionDateRangeWise")]
-        public IHttpActionResult GetTransactionDateRangeWise(DateTime fromDate, DateTime toDate)
+
+        [HttpGet]
+        [Route("api/transaction/DateRange/{fromdate:datetime}/{todate:datetime}")]
+        public IHttpActionResult GetTransactionDateRangeWise(DateTime fromdate, DateTime todate)/*(DateTime fromDate, DateTime toDate)*/
         {
+
             var transactions = _context.Transactions
-                .Where(t => t.TransactionDate <= fromDate && t.TransactionDate >= toDate)
+                .Include(t => t.Category)
+                .Include(t => t.TransactionType)
+                .Where(t => t.TransactionDate >= fromdate && t.TransactionDate <= todate)
                 .ToList()
                 .Select(Mapper.Map<Transaction, TransactionDto>);
             return Ok(transactions);
+            // return Ok("test");
+
         }
 
         [HttpPost]
@@ -61,6 +67,41 @@ namespace IETracker.Controllers.api
             }
             var transaction = Mapper.Map<TransactionDto, Transaction>(transactionDto);
             _context.Transactions.Add(transaction);
+
+            if (transaction.TransactionTypeId == TransactionType.Income)
+            {
+                if (_context.Balances.Where(b => b.BalanceDate == transaction.TransactionDate.Date).Count() == 0)
+                {
+                    DateTime? lastUpdatedBalanceDate = _context.Balances.Max(b => (DateTime?)b.BalanceDate);
+                    lastUpdatedBalanceDate = lastUpdatedBalanceDate == null ? DateTime.Now.Date : lastUpdatedBalanceDate;
+                    Balance balance = _context.Balances.SingleOrDefault(a => a.BalanceDate == lastUpdatedBalanceDate);
+
+                    _context.Balances.Add(new Balance { BalanceDate = transaction.TransactionDate.Date, Amount = transaction.Amount + (balance == null ? 0 : balance.Amount) });
+                }
+                else
+                {
+                    List<Balance> balances = _context.Balances.Where(b => b.BalanceDate >= transaction.TransactionDate.Date).ToList();
+                    foreach (Balance item in balances)
+                    {
+                        item.Amount += transaction.Amount;
+                    }                    
+                }
+            }
+
+            if (transaction.TransactionTypeId == TransactionType.Expense)
+            {
+                if (_context.Balances.Where(b => b.BalanceDate == transaction.TransactionDate.Date).Count() == 0)
+                {
+                    _context.Balances.Add(new Balance { BalanceDate = transaction.TransactionDate, Amount = -transaction.Amount });
+                }
+                else
+                {
+                    Balance balance = _context.Balances.Single(b => b.BalanceDate == transaction.TransactionDate.Date);
+                    balance.Amount -= transaction.Amount;
+                }
+
+            }
+
             _context.SaveChanges();
 
             return Created(Request.RequestUri + "/" + transaction.Id, transaction);
