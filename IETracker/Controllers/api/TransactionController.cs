@@ -73,10 +73,17 @@ namespace IETracker.Controllers.api
                 if (_context.Balances.Where(b => b.BalanceDate == transaction.TransactionDate.Date).Count() == 0)
                 {
                     DateTime? lastUpdatedBalanceDate = _context.Balances.Max(b => (DateTime?)b.BalanceDate);
-                    lastUpdatedBalanceDate = lastUpdatedBalanceDate == null ? DateTime.Now.Date : lastUpdatedBalanceDate;
-                    Balance balance = _context.Balances.SingleOrDefault(a => a.BalanceDate == lastUpdatedBalanceDate);
+                    lastUpdatedBalanceDate = lastUpdatedBalanceDate == null ? transaction.TransactionDate.Date : lastUpdatedBalanceDate;
+//                    Balance balance = _context.Balances.SingleOrDefault(a => a.BalanceDate == lastUpdatedBalanceDate);
 
-                    _context.Balances.Add(new Balance { BalanceDate = transaction.TransactionDate.Date, Amount = transaction.Amount + (balance == null ? 0 : balance.Amount) });
+                    if(lastUpdatedBalanceDate > transaction.TransactionDate)
+                    {
+                        DateTime closingBalanceDateTime = _context.Balances.Where(b => b.BalanceDate <= transaction.TransactionDate.Date).Max(m=>m.BalanceDate);
+                       
+                    }
+
+                   // _context.Balances.Add(new Balance { BalanceDate = transaction.TransactionDate.Date, Amount = transaction.Amount + (balance == null ? 0 : balance.Amount) });
+                   
                 }
                 else
                 {
@@ -84,7 +91,7 @@ namespace IETracker.Controllers.api
                     foreach (Balance item in balances)
                     {
                         item.Amount += transaction.Amount;
-                    }                    
+                    }
                 }
             }
 
