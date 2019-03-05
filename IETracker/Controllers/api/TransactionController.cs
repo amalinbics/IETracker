@@ -72,18 +72,21 @@ namespace IETracker.Controllers.api
             {
                 if (_context.Balances.Where(b => b.BalanceDate == transaction.TransactionDate.Date).Count() == 0)
                 {
-                    DateTime? lastUpdatedBalanceDate = _context.Balances.Max(b => (DateTime?)b.BalanceDate);
+                    DateTime? lastUpdatedBalanceDate = _context.Balances.
+                        Where(b => b.BalanceDate < transaction.TransactionDate.Date)
+                        .Max(b => (DateTime?)b.BalanceDate);
                     lastUpdatedBalanceDate = lastUpdatedBalanceDate == null ? transaction.TransactionDate.Date : lastUpdatedBalanceDate;
-//                    Balance balance = _context.Balances.SingleOrDefault(a => a.BalanceDate == lastUpdatedBalanceDate);
 
-                    if(lastUpdatedBalanceDate > transaction.TransactionDate)
+                    Balance balance = _context.Balances.SingleOrDefault(b => b.BalanceDate == lastUpdatedBalanceDate);
+
+                    _context.Balances.Add(new Balance { BalanceDate = transaction.TransactionDate.Date, Amount = transaction.Amount + (balance == null ? 0 : balance.Amount) });
+
+                    List<Balance> balances = _context.Balances.Where(b => b.BalanceDate > transaction.TransactionDate.Date).ToList();
+                    foreach (Balance item in balances)
                     {
-                        DateTime closingBalanceDateTime = _context.Balances.Where(b => b.BalanceDate <= transaction.TransactionDate.Date).Max(m=>m.BalanceDate);
-                       
+                        item.Amount += transaction.Amount;
                     }
 
-                   // _context.Balances.Add(new Balance { BalanceDate = transaction.TransactionDate.Date, Amount = transaction.Amount + (balance == null ? 0 : balance.Amount) });
-                   
                 }
                 else
                 {
@@ -99,12 +102,28 @@ namespace IETracker.Controllers.api
             {
                 if (_context.Balances.Where(b => b.BalanceDate == transaction.TransactionDate.Date).Count() == 0)
                 {
-                    _context.Balances.Add(new Balance { BalanceDate = transaction.TransactionDate, Amount = -transaction.Amount });
+                    DateTime? lastUpdatedBalanceDate = _context.Balances.
+                        Where(b => b.BalanceDate < transaction.TransactionDate.Date)
+                        .Max(b => (DateTime?)b.BalanceDate);
+                    lastUpdatedBalanceDate = lastUpdatedBalanceDate == null ? transaction.TransactionDate.Date : lastUpdatedBalanceDate;
+
+                    Balance balance = _context.Balances.SingleOrDefault(b => b.BalanceDate == lastUpdatedBalanceDate);
+
+                    _context.Balances.Add(new Balance { BalanceDate = transaction.TransactionDate, Amount = (balance == null ? 0 : balance.Amount) - transaction.Amount });
+
+                    List<Balance> balances = _context.Balances.Where(b => b.BalanceDate > transaction.TransactionDate.Date).ToList();
+                    foreach (Balance item in balances)
+                    {
+                        item.Amount -= transaction.Amount;
+                    }
                 }
                 else
                 {
-                    Balance balance = _context.Balances.Single(b => b.BalanceDate == transaction.TransactionDate.Date);
-                    balance.Amount -= transaction.Amount;
+                    List<Balance> balances = _context.Balances.Where(b => b.BalanceDate >= transaction.TransactionDate.Date).ToList();
+                    foreach (Balance item in balances)
+                    {
+                        item.Amount -= transaction.Amount;
+                    }
                 }
 
             }
@@ -123,6 +142,25 @@ namespace IETracker.Controllers.api
             }
             var transactionInDb = _context.Transactions.Single(t => t.Id == id);
 
+            if (transactionDto.TransactionTypeId == TransactionType.Income)
+            {
+                List<Balance> balances = _context.Balances.Where(b => b.BalanceDate >= transactionDto.TransactionDate.Date).ToList();
+                foreach (Balance item in balances)
+                {
+                    item.Amount -= transactionInDb.Amount;
+                    item.Amount += transactionDto.Amount;
+                }
+            }
+            else if (transactionDto.TransactionTypeId == TransactionType.Expense)
+            {
+                List<Balance> balances = _context.Balances.Where(b => b.BalanceDate >= transactionDto.TransactionDate.Date).ToList();
+                foreach (Balance item in balances)
+                {
+                    item.Amount -= transactionInDb.Amount;
+                    item.Amount -= transactionDto.Amount;
+                }
+            }
+
             Mapper.Map(transactionDto, transactionInDb);
             _context.SaveChanges();
 
@@ -134,6 +172,15 @@ namespace IETracker.Controllers.api
         {
             var transactionInDb = _context.Transactions.Single(t => t.Id == id);
             _context.Transactions.Remove(transactionInDb);
+
+            List<Balance> balances = _context.Balances.Where(b => b.BalanceDate >= transactionInDb.TransactionDate.Date).ToList();
+            foreach (Balance item in balances)
+            {
+                if (transactionInDb.TransactionTypeId == TransactionType.Income)
+                    item.Amount -= transactionInDb.Amount;
+                else if (transactionInDb.TransactionTypeId == TransactionType.Expense)
+                    item.Amount += transactionInDb.Amount;
+            }
             _context.SaveChanges();
             return Ok();
         }
