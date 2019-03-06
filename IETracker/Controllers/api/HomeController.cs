@@ -65,6 +65,13 @@ namespace IETracker.Controllers.api
             return Ok(result);
         }
 
+        public IHttpActionResult GetBalance()
+        {
+            var balanceDate = _context.Balances.Max(b => b.BalanceDate);
+            var balance = _context.Balances.SingleOrDefault(b => b.BalanceDate == balanceDate);
+            return Ok(balance.Amount);           
+        }
+
 
     }
 }

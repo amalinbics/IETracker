@@ -40,6 +40,15 @@
         $(document).ready(function () {
             var colors = ['#007bff', '#EC1E27'];
             var balance;
+
+            $.ajax({
+                url: "/api/home/GetBalance",
+                type: "get",
+                success: function (result) {
+                    $('#lblBalance').html("Balance - " + result);
+                }
+            });
+
             $.ajax({
                 url: "/api/home/Get",
                 type: "get",
@@ -47,8 +56,7 @@
                     chartData = result;
                     console.log(chartData[0]);
                     console.log(chartData[1]);
-                    balance = chartData[0] - chartData[1];
-                    $('#lblBalance').html("Balance - " + balance);
+                                        
                     console.log(balance);
                     var chBar = document.getElementById("chtIncomeExpense");
                     var chartData = {
@@ -97,16 +105,16 @@
                     var category = [];
                     for (var i = 0; i < result.length; i++) {
                         category.push(result[i].category[0].name);
-
-
                     }
+
+                    console.log(category);
                     var amount = [];
                     var bgColors = [];
                     for (var j = 0; j < result.length; j++) {
                         amount.push(result[j].total);
                         bgColors.push(getRandomColor());
                     }
-
+                    console.log(amount);
                     var chBarCategoryIncomeExpense = document.getElementById("chtCategoryIncomeExpense");
                     var chartDataCategoryIncomeExpense = {
                         labels: category,
